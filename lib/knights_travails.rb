@@ -1,4 +1,6 @@
 class Cell
+  attr_accessor :x, :y, :dist
+
   def initialize(x = 0, y = 0, dist = 0)
     @x = x
     @y = y
@@ -6,27 +8,49 @@ class Cell
   end
 end
 
-def min_steps_to_target_pos(knight_pos, target_pos, N)
+def is_inside(x, y, n)
+  return true if x > 1 && x <= n && y > 1 && y <= n
 
-  #all possible movements for the knight
+  false
+end
+
+def min_steps_to_target_pos(knight_pos, target_pos, n)
+  # all possible movements for the knight
   dx = [2, 2, -2, -2, 1, 1, -1, -1]
   dy = [1, -1, 1, -1, 2, -2, 2, -2]
 
   queue = []
 
-  #push the starting position of the knight
-  #the distance should be 0
+  # push the starting position of the knight
+  # the distance should be 0
   queue.append(cell(knight_pos[0], knight_pos[1], 0))
 
-  #mark all the nodes unvisited
-  visit = Array.new(N)
+  # make all the nodes unvisited
+  visited = Array.new(n)
 
-  for i in 0..(N-1)
-    visit[i] = Array.new(N)
-    for j in 0..(N-1)
-      visit[i][j] = false
+  for i in 0..(n - 1)
+    visited[i] = Array.new(n)
+    for j in 0..(n - 1)
+      visited[i][j] = false
     end
   end
 
-  
+  # visit the starting state
+  visited[knight_pos[0]][knight_pos[1]] = true
+
+  # loop until we have one node in queue
+  while queue.length > 0
+    t = queue.shift
+
+    # if current node == target node
+    # return its distance
+    return t.dist if t.x == target_pos[0] && t.y == target_pos[1]
+
+    # loop for all reachable states
+    for i in 1..8
+      x = t.x + dx[i]
+      y = t.y + dy[i]
+
+    end
+  end
 end
