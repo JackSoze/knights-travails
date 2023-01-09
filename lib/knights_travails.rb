@@ -8,7 +8,7 @@ class Cell
   end
 end
 
-def is_inside(x, y, n)
+def is_inside?(x, y, n)
   return true if x > 1 && x <= n && y > 1 && y <= n
 
   false
@@ -23,7 +23,7 @@ def min_steps_to_target_pos(knight_pos, target_pos, n)
 
   # push the starting position of the knight
   # the distance should be 0
-  queue.append(cell(knight_pos[0], knight_pos[1], 0))
+  queue.append(Cell.new(knight_pos[0], knight_pos[1], 0))
 
   # make all the nodes unvisited
   visited = Array.new(n)
@@ -34,6 +34,7 @@ def min_steps_to_target_pos(knight_pos, target_pos, n)
       visited[i][j] = false
     end
   end
+  
 
   # visit the starting state
   visited[knight_pos[0]][knight_pos[1]] = true
@@ -46,11 +47,23 @@ def min_steps_to_target_pos(knight_pos, target_pos, n)
     # return its distance
     return t.dist if t.x == target_pos[0] && t.y == target_pos[1]
 
-    # loop for all reachable states
-    for i in 1..8
+    # loop for all reachable states, 
+    # reachable states are 8 in number
+    
+    for i in 0..7
       x = t.x + dx[i]
       y = t.y + dy[i]
-
+      
+      if (is_inside?(x, y, n) && !visited)
+        visited[x][y] = true
+        queue.push(Cell.new(x, y, t.dist + 1))
+        puts "tata"
+      end
     end
   end
 end
+
+n = 30
+knight_pos = [1, 1]
+target_pos = [30, 30]
+puts min_steps_to_target_pos(knight_pos, target_pos, n).class
