@@ -8,7 +8,7 @@ class Cell
     @previous_cell = nil
   end
 
-  # save each cell path as a node in 
+  # save each cell path as a node in
   #  in a linked list to show final
   #   cell path to target location
   def cell_path
@@ -18,7 +18,7 @@ class Cell
       list << [temp.x, temp.y]
       temp = temp.previous_cell
     end
-    p list.reverse.append([@x, @y])
+    list.reverse.append([@x, @y])
   end
 end
 
@@ -60,7 +60,6 @@ def min_steps_to_target_pos(knight_pos, target_pos, n)
     # save the cell data with footprint of path
     # return its distance
 
-
     if t.x == target_pos[0] && t.y == target_pos[1]
       @target_pos_cell = t
       return t.dist
@@ -90,8 +89,13 @@ def shortest_path_to_target_pos
   @target_pos_cell.cell_path
 end
 
+def knight_moves(knight_pos, target_pos, n = 8)
+  min_steps_to_target_pos(knight_pos, target_pos, n)
+  p shortest_path_to_target_pos
+end
+
 n = 6
 knight_pos = [4, 5]
 target_pos = [1, 1]
 puts min_steps_to_target_pos(knight_pos, target_pos, n)
-shortest_path_to_target_pos
+knight_moves(knight_pos, target_pos)
