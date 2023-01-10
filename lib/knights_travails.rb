@@ -48,6 +48,7 @@ def min_steps_to_target_pos(knight_pos, target_pos, n)
     end
   end
 
+  # visit the starting position
   visited[knight_pos[0]][knight_pos[1]] = true
 
   # loop until we have one node in queue
@@ -70,9 +71,7 @@ def min_steps_to_target_pos(knight_pos, target_pos, n)
       new_cell = Cell.new(x, y, t.dist + 1)
       new_cell.previous_cell = t
       queue.push(new_cell)
-
-        end
-
+    end
   end
 end
 
