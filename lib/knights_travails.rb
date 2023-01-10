@@ -36,7 +36,6 @@ def min_steps_to_target_pos(knight_pos, target_pos, n)
   queue = []
 
   # push the starting position of the knight
-  # the distance should be 0
   queue.append(Cell.new(knight_pos[0], knight_pos[1], 0))
 
   # make all the nodes unvisited
@@ -49,16 +48,11 @@ def min_steps_to_target_pos(knight_pos, target_pos, n)
     end
   end
 
-  # visit the starting state
   visited[knight_pos[0]][knight_pos[1]] = true
 
   # loop until we have one node in queue
   while queue.length > 0
     t = queue.shift
-
-    # if current node == target node
-    # save the cell data with footprint of path
-    # return its distance
 
     if t.x == target_pos[0] && t.y == target_pos[1]
       @target_pos_cell = t
@@ -66,9 +60,6 @@ def min_steps_to_target_pos(knight_pos, target_pos, n)
     end
 
     # loop for all reachable states,
-    # reachable states are 8 in number
-    # push all discovered nodes to queue
-
     for i in 0..7
       x = t.x + dx[i]
       y = t.y + dy[i]
@@ -80,7 +71,7 @@ def min_steps_to_target_pos(knight_pos, target_pos, n)
       new_cell.previous_cell = t
       queue.push(new_cell)
 
-    end
+        end
 
   end
 end
@@ -91,9 +82,10 @@ end
 
 def knight_moves(knight_pos, target_pos, n = 8)
   min_steps_to_target_pos(knight_pos, target_pos, n)
-  p shortest_path_to_target_pos
+  pdra shortest_path_to_target_pos
 end
 
+# driver code
 n = 6
 knight_pos = [4, 5]
 target_pos = [1, 1]
