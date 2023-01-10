@@ -1,15 +1,29 @@
 class Cell
-  attr_accessor :x, :y, :dist
+  attr_accessor :x, :y, :dist, :previous_cell
 
   def initialize(x = 0, y = 0, dist = 0)
-    @x = x 
-    @y = y 
+    @x = x
+    @y = y
     @dist = dist
+    @previous_cell = nil
+  end
+
+  # save each cell path as a node in 
+  #  in a linked list to show final
+  #   cell path to target location
+  def cell_path
+    temp = @previous_cell
+    list = []
+    until temp.nil?
+      list << [temp.x, temp.y]
+      temp = temp.previous_cell
+    end
+    p list.reverse.append([@x, @y])
   end
 end
 
 def is_inside?(x, y, n)
-  return true if x > 1 && x <= n && y > 1 && y <= n
+  return true if x >= 1 && x <= n && y >= 1 && y <= n
 
   false
 end
@@ -28,13 +42,12 @@ def min_steps_to_target_pos(knight_pos, target_pos, n)
   # make all the nodes unvisited
   visited = Array.new(n + 1)
 
-  for i in 0..(n)
+  for i in 0..n
     visited[i] = Array.new(n)
-    for j in 0..(n)
+    for j in 0..n
       visited[i][j] = false
     end
   end
-  
 
   # visit the starting state
   visited[knight_pos[0]][knight_pos[1]] = true
@@ -44,25 +57,41 @@ def min_steps_to_target_pos(knight_pos, target_pos, n)
     t = queue.shift
 
     # if current node == target node
+    # save the cell data with footprint of path
     # return its distance
-    return t.dist if t.x == target_pos[0] && t.y == target_pos[1]
 
-    # loop for all reachable states, 
+
+    if t.x == target_pos[0] && t.y == target_pos[1]
+      @target_pos_cell = t
+      return t.dist
+    end
+
+    # loop for all reachable states,
     # reachable states are 8 in number
-    
+    # push all discovered nodes to queue
+
     for i in 0..7
       x = t.x + dx[i]
       y = t.y + dy[i]
-      
-      if (is_inside?(x, y, n) && !visited[x][y])
-        visited[x][y] = true
-        queue.push(Cell.new(x, y, t.dist + 1)) 
-      end
+
+      next unless is_inside?(x, y, n) && !visited[x][y]
+
+      visited[x][y] = true
+      new_cell = Cell.new(x, y, t.dist + 1)
+      new_cell.previous_cell = t
+      queue.push(new_cell)
+
     end
+
   end
 end
 
-n = 30
-knight_pos = [1, 1]
-target_pos = [30, 30]
+def shortest_path_to_target_pos
+  @target_pos_cell.cell_path
+end
+
+n = 6
+knight_pos = [4, 5]
+target_pos = [1, 1]
 puts min_steps_to_target_pos(knight_pos, target_pos, n)
+shortest_path_to_target_pos
